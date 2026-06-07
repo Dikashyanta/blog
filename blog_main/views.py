@@ -18,3 +18,6 @@ def home(request):
     }
 
     return render(request, 'home.html', context)
+
+def blogs (request, slug):
+    return render(request,'blog.html')
