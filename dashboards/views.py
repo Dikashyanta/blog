@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from blogs.models import category, Blog
+from blogs.models import category as Category, Blog
 from django.contrib.auth.decorators import login_required
 from .forms import categoryForm
 
 
 @login_required(login_url='login')
 def dashboard(request):
-    category_count = category.objects.all().count()
+    category_count = Category.objects.all().count()
     blogs_count = Blog.objects.all().count()
 
     context = {
@@ -18,7 +18,7 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 def categories(request):
-    categories_list = category.objects.all()
+    categories_list = Category.objects.all()
     context = {
         'categories': categories_list,
     }
@@ -38,9 +38,17 @@ def add_category(request):
     return render(request, 'dashboard/add_category.html', context)
 
 def edit_category(request, pk):
-    form = categoryForm()
+    category_obj = get_object_or_404(Category, pk=pk)
+    if request.method == 'POST':
+        form = categoryForm(request.POST, instance=category_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+
+    form = categoryForm(instance=category_obj)
     context ={
-        'form':form,
+        'form': form,
+        'category': category_obj,
     }
     return render(request, 'dashboard/edit_category.html', context)
 
