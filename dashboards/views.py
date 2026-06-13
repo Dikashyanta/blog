@@ -3,6 +3,7 @@ from blogs.models import category as Category, Blog
 from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
 from .forms import BlogPostForm, categoryForm
+from django.contrib.auth.models import User
 
 
 @login_required(login_url='login')
@@ -106,6 +107,12 @@ def delete_post(request, pk):
     post.delete()
     return redirect('posts')
 
+def users(request):
+    users = User.objects.all()
+    context = {
+        'users': users,
+    }
+    return render(request, 'dashboard/users.html', context)
 
 
 
