@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from blogs.models import category as Category, Blog
 from django.contrib.auth.decorators import login_required
+from django.utils.text import slugify
 from .forms import BlogPostForm, categoryForm
 
 
@@ -99,6 +100,11 @@ def edit_post(request,pk):
         'post': post,
     }
     return render(request, 'dashboard/edit_post.html', context)
+
+def delete_post(request, pk):
+    post = get_object_or_404(Blog, pk=pk)
+    post.delete()
+    return redirect('posts')
 
 
 
