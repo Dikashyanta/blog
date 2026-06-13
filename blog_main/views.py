@@ -10,8 +10,8 @@ from django.contrib import auth
 
 def home(request):
     categories = Category.objects.all()
-    featured_posts = Blog.objects.filter(is_featured=True, status='published').order_by('-created_at')[:5]
-    posts = Blog.objects.filter(is_featured=False, status='published').order_by('-created_at')[:10]
+    featured_posts = Blog.objects.filter(is_featured=True, status='published').exclude(slug='').order_by('-created_at')[:5]
+    posts = Blog.objects.filter(is_featured=False, status='published').exclude(slug='').order_by('-created_at')[:10]
 
     #fetch about us
     try:

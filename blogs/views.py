@@ -9,7 +9,7 @@ from django.db.models import Q
 def post_list_by_category(request, category_id):
 
     # fetch posts based on category_id and pass to template
-    posts = Blog.objects.filter(category__id=category_id, status='published').order_by('-created_at')
+    posts = Blog.objects.filter(category__id=category_id, status='published').exclude(slug='').order_by('-created_at')
     
     try:
         category_obj = Category.objects.get(id=category_id)
@@ -40,7 +40,7 @@ def search(request):
     keyword = request.GET.get('keyword')
 
 
-    blogs = Blog.objects.filter(Q(title__icontains=keyword) | Q(short_description__icontains=keyword) | Q(blog_body__icontains=keyword), status='published').order_by('-created_at')
+    blogs = Blog.objects.filter(Q(title__icontains=keyword) | Q(short_description__icontains=keyword) | Q(blog_body__icontains=keyword), status='published').exclude(slug='').order_by('-created_at')
 
     context = {
         'blogs': blogs,
