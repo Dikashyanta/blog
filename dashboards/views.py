@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from blogs.models import category as Category, Blog
 from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
-from .forms import BlogPostForm, categoryForm
+from .forms import AddUserForm, BlogPostForm, categoryForm
 from django.contrib.auth.models import User
 
 
@@ -113,6 +113,13 @@ def users(request):
         'users': users,
     }
     return render(request, 'dashboard/users.html', context)
+
+def add_user(request):
+    form = AddUserForm()
+    context = {
+        'form': form, 
+    }
+    return render(request, 'dashboard/add_user.html', context)
 
 
 
