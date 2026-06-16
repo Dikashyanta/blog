@@ -67,3 +67,60 @@ h1, h2, h3, h4, h5, h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+/* Travel theme additions */
+:root{
+  --accent:#ff7a59; /* warm coral */
+  --muted:#6b6b6b;
+  --bg:#0b1320; /* deep navy */
+  --card:#ffffff;
+  --accent-2:#ffd166; /* sand */
+}
+
+body{
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: linear-gradient(180deg, #f7f8fb 0%, #ffffff 100%);
+  color: #222;
+}
+
+.site-wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+
+/* Hero */
+.travel-hero{
+  position:relative;
+  min-height:60vh;
+  background-position:center;
+  background-size:cover;
+  display:flex;
+  align-items:center;
+  margin-bottom:2.5rem;
+  border-radius:8px;
+  overflow:hidden;
+}
+.travel-hero-overlay{
+  position:absolute;inset:0;background:linear-gradient(180deg, rgba(11,19,32,0.55), rgba(11,19,32,0.55));
+}
+.travel-hero-content{position:relative;z-index:2;padding:48px 24px}
+.hero-title{font-family: 'Playfair Display', serif;color:#fff;font-size:3rem;margin-bottom:.5rem;line-height:1.05}
+.hero-sub{color:rgba(255,255,255,0.9);max-width:720px;margin-bottom:1rem}
+.btn-cta{background:var(--accent);border-color:transparent;padding:12px 22px;font-weight:600;border-radius:999px}
+.btn-cta:hover{background:#e06643}
+
+/* Featured cards and galleries */
+.card{border-radius:10px}
+.blog-post h3 a{color:#111}
+
+/* Footer tweak for travel mood */
+.blog-footer{background:linear-gradient(180deg,#0b1320,#071029);color:#ddd}
+.blog-footer a{color:var(--accent-2)}
+
+/* Responsive tweaks */
+@media (min-width: 768px){
+  .hero-title{font-size:4rem}
+  .travel-hero{min-height:72vh}
+}
+
+/* Blog content formatting */
+article section div{line-height:1.8}
+article section div br{display:block;content:"";margin:0.5rem 0}
+article section div{white-space:pre-wrap;word-wrap:break-word}

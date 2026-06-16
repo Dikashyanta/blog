@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+  <section class="travel-hero" style="{% if posts %}background-image: url({{ posts.0.featured_image.url }});{% else %}background-color:#f2f5f8;{% endif %}">
+    <div class="travel-hero-overlay"></div>
+    <div class="container travel-hero-content text-white">
+      <h1 class="hero-title">{{ category.category_name }}</h1>
+      <p class="hero-sub">Browse the latest posts in this category.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="row">
+      {% for post in posts %}
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <img class="card-img-top" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+            <div class="card-body">
+              {% if post.slug %}
+                <h3 class="card-title"><a href="{% url 'blogs' post.slug %}">{{ post.title }}</a></h3>
+              {% else %}
+                <h3 class="card-title">{{ post.title }}</h3>
+              {% endif %}
+              <p class="text-muted small">{{ post.created_at|timesince }} ago | {{ post.author.username }}</p>
+              <p class="card-text">{{ post.short_description|truncatewords:25 }}...</p>
+              <a href="{% url 'blogs' post.slug %}" class="btn btn-sm btn-cta">Read more</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12">
+          <div class="p-4 text-center">
+            <h4>No posts found</h4>
+            <p>There are no posts in the <strong>{{ category.category_name }}</strong> category yet.</p>
+            <a href="/" class="btn btn-outline-secondary">Back Home</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}

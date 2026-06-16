@@ -5,19 +5,18 @@
 
     
     {% for post in featured_posts %}
-    {%if forloop.first %}
-      <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" style="background-image: url({{ post.featured_image.url }});background-blend-mode: overlay;background-size:cover;">
-        <div class="col-md-8 px-0">
-          <h1 class="display-4 font-italic">{{ post.title }}</h1>
-          <p class="lead my-3">{{ post.short_description }}</p>
+    {% if forloop.first %}
+      <section class="travel-hero" style="background-image: url({{ post.featured_image.url }});">
+        <div class="travel-hero-overlay"></div>
+        <div class="container travel-hero-content text-white">
+          <h1 class="hero-title">{{ post.title }}</h1>
+          <p class="hero-sub">{{ post.short_description }}</p>
           {% if post.slug %}
-            <p class="lead mb-0"><a href="{% url 'blogs' post.slug %}" class="text-white font-weight-bold">Continue reading...</a></p>
-          {% else %}
-            <p class="lead mb-0 text-white font-weight-bold">Continue reading...</p>
+            <a href="{% url 'blogs' post.slug %}" class="btn btn-primary btn-cta">Read Full Story</a>
           {% endif %}
         </div>
-      </div>
-      {%endif%}
+      </section>
+    {% endif %}
     {% endfor %}
 
   
@@ -92,8 +91,4 @@
 
   </main><!-- /.container -->
 
-</div>
-
-</body>
-</html>
 {% endblock %}
