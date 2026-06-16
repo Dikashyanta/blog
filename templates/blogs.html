@@ -70,8 +70,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <ul class="list-unstyled mb-0">
-                                {% for categories in categories %}
-                                <li><a href="{% url 'post_by_category' categories.id %}">{{ categories.category_name }}</a></li>
+                                {% for cat in categories %}
+                                <li><a href="{% url 'posts_by_category' cat.id %}">{{ cat.category_name }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
