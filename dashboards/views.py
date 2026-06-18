@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from blogs.models import category as Category, Blog
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
 from .forms import AddUserForm, BlogPostForm, categoryForm, EditUserForm
 from django.contrib.auth.models import User
@@ -19,6 +20,7 @@ def dashboard(request):
     }
     return render(request, 'dashboard/dashboard.html', context)
 
+@login_required(login_url='login')
 def categories(request):
     categories_list = Category.objects.all()
     context = {
@@ -26,7 +28,11 @@ def categories(request):
     }
     return render(request, 'dashboard/categories.html', context)
 
+@login_required(login_url='login')
 def add_category(request):
+    if not request.user.is_staff and not request.user.is_superuser:
+        raise PermissionDenied()
+
     if request.method == 'POST':
         form = categoryForm(request.POST)
         if form.is_valid():
@@ -39,8 +45,12 @@ def add_category(request):
     }
     return render(request, 'dashboard/add_category.html', context)
 
+@login_required(login_url='login')
 def edit_category(request, pk):
     category_obj = get_object_or_404(Category, pk=pk)
+    if not request.user.is_staff and not request.user.is_superuser:
+        raise PermissionDenied()
+
     if request.method == 'POST':
         form = categoryForm(request.POST, instance=category_obj)
         if form.is_valid():
@@ -54,11 +64,16 @@ def edit_category(request, pk):
     }
     return render(request, 'dashboard/edit_category.html', context)
 
+@login_required(login_url='login')
 def delete_category(request, pk):
+    if not request.user.is_staff and not request.user.is_superuser:
+        raise PermissionDenied()
+
     category = get_object_or_404(Category, pk=pk)
     category.delete()
     return redirect('categories')
 
+@login_required(login_url='login')
 def posts(request):
     posts = Blog.objects.all()
     context = {
@@ -66,16 +81,16 @@ def posts(request):
     }
     return render(request, 'dashboard/posts.html', context)
        
+@login_required(login_url='login')
 def add_post(request):
     if request.method == 'POST' :
-        
         form = BlogPostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save(commit=False) # temporarily saving the form
+            post = form.save(commit=False)
             post.author = request.user
             post.save()
             return redirect('posts')
-    
+
     form = BlogPostForm()
     context = {
         'form': form,
@@ -83,8 +98,12 @@ def add_post(request):
     return render(request, 'dashboard/add_post.html', context)
 
 
+@login_required(login_url='login')
 def edit_post(request,pk):
     post = get_object_or_404(Blog, pk=pk)
+    if not (request.user == post.author or request.user.is_staff or request.user.is_superuser):
+        raise PermissionDenied()
+
     if request.method == 'POST':
         form = BlogPostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
@@ -94,7 +113,6 @@ def edit_post(request,pk):
             post.save()
             return redirect('posts')
 
-
     form = BlogPostForm(instance=post)
     context ={
         'form': form,
@@ -102,8 +120,12 @@ def edit_post(request,pk):
     }
     return render(request, 'dashboard/edit_post.html', context)
 
+@login_required(login_url='login')
 def delete_post(request, pk):
     post = get_object_or_404(Blog, pk=pk)
+    if not (request.user == post.author or request.user.is_staff or request.user.is_superuser):
+        raise PermissionDenied()
+
     post.delete()
     return redirect('posts')
 
