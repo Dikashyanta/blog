@@ -48,19 +48,15 @@ def register(request):
     }
     return render(request, 'register.html', context)
 
-def login (request):
+def login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-
-            user = auth.authenticate(username=username, password=password)
-            if user is not None:
-                auth.login(request, user)
+            auth.login(request, form.get_user())
             return redirect('dashboard')
+    else:
+        form = AuthenticationForm()
 
-    form = AuthenticationForm()    
     context = {
         'form': form,
     }
